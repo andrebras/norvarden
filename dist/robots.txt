@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://norvarden.com/sitemap.xml
+Sitemap: https://www.norvarden.com/sitemap.xml

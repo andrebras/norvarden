@@ -1,6 +1,6 @@
 # Norvarden
 
-The company website and custom vector identity for **Norvarden**, an independent software engineering company. Live at **https://norvarden.com**.
+The company website and custom vector identity for **Norvarden**, an independent software engineering company. Live at **https://www.norvarden.com**.
 
 ## Development
 
@@ -48,7 +48,7 @@ Latest projects uses a typographic presentation without thumbnail illustrations.
 
 The site is hosted on **GitHub Pages**. `.github/workflows/pages.yml` runs the tests and publishes `dist/` on every push to `main`. There is no build command.
 
-- **Domain:** `norvarden.com` is the canonical address; `www.norvarden.com` redirects to it.
+- **Domain:** `www.norvarden.com` is the canonical address; `norvarden.com` redirects to it.
 - **DNS (Namecheap):** four `A` records for `@` pointing to GitHub Pages (`185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`) and a `CNAME` record for `www` pointing to `andrebras.github.io`.
 
 ## Contact
