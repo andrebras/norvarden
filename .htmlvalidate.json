@@ -1,3 +1,9 @@
 {
-  "extends": ["html-validate:recommended", "html-validate:prettier"]
+  "extends": ["html-validate:recommended", "html-validate:prettier"],
+  "rules": {
+    "no-dup-id": "error",
+    "valid-id": "error",
+    "no-missing-references": "error",
+    "input-missing-label": "error"
+  }
 }

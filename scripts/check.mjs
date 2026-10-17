@@ -1,115 +1,158 @@
+// Site checks that html-validate cannot express. HTML structure rules (unique
+// ids, valid for=/aria references, labelled controls) live in .htmlvalidate.json.
+// Usage: node scripts/check.mjs [dist-dir]
 import assert from 'node:assert/strict';
-import { readFile, access } from 'node:fs/promises';
+import { access, readFile } from 'node:fs/promises';
+import { pathToFileURL } from 'node:url';
 import vm from 'node:vm';
-const root = new URL('../dist/', import.meta.url);
-const html = await readFile(new URL('index.html', root), 'utf8');
-const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]);
-assert.equal(new Set(ids).size, ids.length, 'Duplicate HTML IDs');
-for (const match of html.matchAll(/\bhref="#([^"]+)"/g))
-  assert(ids.includes(match[1]), `Missing anchor ${match[1]}`);
-for (const match of html.matchAll(/\b(?:src|href)="([^"#]+)"/g)) {
-  if (!/^(https?:|mailto:)/.test(match[1])) await access(new URL(match[1], root));
+import { JSDOM } from 'jsdom';
+
+const root = process.argv[2]
+  ? pathToFileURL(process.argv[2].replace(/\/?$/, '/'))
+  : new URL('../dist/', import.meta.url);
+const pages = ['index.html', '404.html'];
+const external = /^(?:[a-z][a-z\d+.-]*:|\/\/)/i;
+
+// Site-root paths ("/assets/x.svg") resolve against dist/, not the filesystem root.
+const resolve = (path, base) =>
+  path.startsWith('/') ? new URL(`.${path}`, root) : new URL(path, base);
+
+async function load(page) {
+  const html = await readFile(new URL(page, root), 'utf8');
+  return { html, document: new JSDOM(html).window.document };
 }
-for (const match of html.matchAll(/\bfor="([^"]+)"/g))
-  assert(ids.includes(match[1]), `Missing form control ${match[1]}`);
-assert(
-  html.includes('prefers-reduced-motion') ||
-    (await readFile(new URL('styles.css', root), 'utf8')).includes('prefers-reduced-motion'),
-);
-assert(!/<script[^>]*src="https?:/.test(html), 'Unexpected third-party JavaScript');
-const controls = new Map();
-function element(id) {
-  if (!controls.has(id))
-    controls.set(id, {
-      value: '',
-      textContent: '',
-      hidden: true,
-      attrs: {},
-      handlers: {},
-      setAttribute(k, v) {
-        this.attrs[k] = v;
-      },
-      getAttribute(k) {
-        return this.attrs[k];
-      },
-      addEventListener(k, v) {
-        this.handlers[k] = v;
-      },
-      appendChild() {},
-      focus() {},
-      select() {},
-    });
-  return controls.get(id);
+
+// Every local href/src resolves to a file in dist/, every #anchor to an id.
+for (const page of pages) {
+  const { document } = await load(page);
+  const pageUrl = new URL(page, root);
+  for (const el of document.querySelectorAll('[href], [src]')) {
+    for (const attr of ['href', 'src']) {
+      const value = el.getAttribute(attr)?.trim();
+      if (value == null || external.test(value)) continue;
+      const [path, fragment] = value.split('#');
+      if (path === '') {
+        if (fragment)
+          assert(document.getElementById(fragment), `${page}: missing anchor #${fragment}`);
+        continue;
+      }
+      const target = resolve(path.split('?')[0], pageUrl);
+      assert(target.href.startsWith(root.href), `${page}: ${value} points outside dist/`);
+      if (target.pathname.endsWith('/')) target.pathname += 'index.html';
+      await access(target).catch(() => assert.fail(`${page}: missing file for ${attr}="${value}"`));
+    }
+  }
+
+  // No third-party JavaScript.
+  for (const script of document.querySelectorAll('script[src]'))
+    assert(
+      !external.test(script.getAttribute('src').trim()),
+      `${page}: unexpected third-party script ${script.getAttribute('src')}`,
+    );
+
+  // Reduced motion is honoured by the page's own styles.
+  const css = [...document.querySelectorAll('style')].map((style) => style.textContent);
+  for (const link of document.querySelectorAll('link[rel~="stylesheet"][href]')) {
+    const href = link.getAttribute('href');
+    if (!external.test(href)) css.push(await readFile(resolve(href, pageUrl), 'utf8'));
+  }
+  assert(
+    /@media[^{]*prefers-reduced-motion\s*:\s*reduce/.test(css.join('\n')),
+    `${page}: no prefers-reduced-motion: reduce rule`,
+  );
 }
-const menu = element('menu');
-menu.attrs['aria-expanded'] = 'false';
-const serviceLink = {
-  dataset: { service: 'AI-built software' },
-  addEventListener(_, fn) {
-    this.click = fn;
-  },
-};
-const doc = {
-  querySelector() {
-    return menu;
-  },
-  getElementById: element,
-  querySelectorAll() {
-    return [serviceLink];
-  },
-  addEventListener(k, v) {
-    this[k] = v;
-  },
-  createElement() {
-    return element('created');
-  },
-};
-const win = {
-  location: { href: '' },
-  matchMedia() {
-    return { addEventListener() {} };
-  },
-};
-let copied = '';
-const context = {
-  document: doc,
-  window: win,
-  navigator: {
+
+// Behaviour of app.js, run against a real DOM built from index.html.
+// jsdom has no matchMedia, clipboard or navigation, so those are stubbed.
+async function runApp({ clipboardFails = false } = {}) {
+  const { html } = await load('index.html');
+  const { window } = new JSDOM(html);
+  const { document } = window;
+  const location = { href: '' };
+  let copied = '';
+  const browser = {
+    location,
+    matchMedia: () => ({ matches: false, addEventListener() {} }),
+  };
+  const navigator = {
     clipboard: {
       async writeText(value) {
+        if (clipboardFails) throw new Error('denied');
         copied = value;
       },
     },
-  },
-  Date,
-  encodeURIComponent,
-};
-vm.runInNewContext(await readFile(new URL('app.js', root), 'utf8'), context);
-menu.handlers.click();
-assert.equal(menu.attrs['aria-expanded'], 'true');
-assert.equal(element('mobile-nav').hidden, false);
-doc.keydown({ key: 'Escape' });
-assert.equal(menu.attrs['aria-expanded'], 'false');
-assert.equal(element('mobile-nav').hidden, true);
-serviceLink.click();
-assert.equal(element('service').value, 'AI-built software');
-const form = element('brief-form');
-form.elements = {
-  name: { value: 'André & Co' },
-  brief: { value: 'Legacy review? A&B #1 + new work' },
-  service: { value: 'Legacy review & recovery' },
-};
-form.reportValidity = () => true;
-form.handlers.submit({ preventDefault() {}, currentTarget: form });
-const mail = win.location.href;
+  };
+  vm.runInNewContext(await readFile(new URL('app.js', root), 'utf8'), {
+    document,
+    window: browser,
+    navigator,
+  });
+  return { window, document, location, copied: () => copied };
+}
+
+const app = await runApp();
+const { document: doc, window: win } = app;
+const menu = doc.querySelector('.menu-toggle');
+const mobileNav = doc.getElementById('mobile-nav');
+
+assert.equal(doc.getElementById('year').textContent, String(new Date().getFullYear()));
+
+menu.click();
+assert.equal(menu.getAttribute('aria-expanded'), 'true');
+assert.equal(mobileNav.hidden, false);
+doc.dispatchEvent(new win.KeyboardEvent('keydown', { key: 'Escape' }));
+assert.equal(menu.getAttribute('aria-expanded'), 'false');
+assert.equal(mobileNav.hidden, true);
+assert.equal(doc.activeElement, menu, 'Escape returns focus to the menu button');
+
+menu.click();
+mobileNav.querySelector('a').click();
+assert.equal(mobileNav.hidden, true, 'Following a mobile link closes the menu');
+
+// Every data-service link must select a real <option>.
+const service = doc.getElementById('service');
+const serviceLinks = doc.querySelectorAll('[data-service]');
+assert(serviceLinks.length > 0, 'No [data-service] links');
+for (const link of serviceLinks) {
+  link.click();
+  assert.equal(service.value, link.dataset.service, `No <option> for "${link.dataset.service}"`);
+}
+
+const form = doc.getElementById('brief-form');
+function submitBrief(target) {
+  target.service.value = 'Legacy review & recovery';
+  target.form.elements.name.value = 'André & Co';
+  target.form.elements.brief.value = 'Legacy review? A&B #1 + new work';
+  target.form.dispatchEvent(new target.win.Event('submit', { cancelable: true }));
+}
+submitBrief({ form, service, win });
+const mail = app.location.href;
 assert(mail.startsWith('mailto:hello@norvarden.com?'));
 const query = new URLSearchParams(mail.split('?')[1]);
 assert.equal(query.get('subject'), 'Norvarden enquiry — Legacy review & recovery');
 assert(query.get('body').includes('Legacy review? A&B #1 + new work'));
 assert(query.get('body').includes('André & Co'));
-assert.equal(element('email-fallback').hidden, false);
-await element('copy-brief').handlers.click();
-assert(copied.includes('André & Co'));
+assert.equal(doc.getElementById('email-fallback').hidden, false);
+
+doc.getElementById('copy-brief').click();
+await new Promise((resolve) => setTimeout(resolve));
+assert(app.copied().includes('André & Co'));
+assert.match(doc.getElementById('copy-status').textContent, /^Copied/);
+
+// Clipboard unavailable: the draft is shown in a textarea instead.
+const denied = await runApp({ clipboardFails: true });
+submitBrief({
+  form: denied.document.getElementById('brief-form'),
+  service: denied.document.getElementById('service'),
+  win: denied.window,
+});
+denied.document.getElementById('copy-brief').click();
+await new Promise((resolve) => setTimeout(resolve));
+const draft = denied.document.getElementById('draft-text');
+assert(draft, 'Copy fallback textarea not created');
+assert(draft.value.includes('André & Co'));
+assert.equal(denied.document.activeElement, draft);
+
 console.log(
-  'Passed: assets, anchors, form labels, reduced motion, mobile navigation, service selection, encoded email draft, copy fallback.',
+  'Passed: assets and anchors (index, 404), reduced motion, no third-party scripts, mobile navigation, service selection, encoded email draft, copy and copy fallback.',
 );
