@@ -8,15 +8,19 @@
     "node": ">=20"
   },
   "scripts": {
-    "dev": "node scripts/serve.mjs",
-    "start": "node scripts/serve.mjs",
+    "dev": "npm run build && node scripts/serve.mjs",
+    "start": "npm run build && node scripts/serve.mjs",
     "check": "node --check dist/app.js && node scripts/check.mjs",
     "format": "prettier --write .",
     "lint": "prettier --check . && html-validate dist/*.html && stylelint \"dist/**/*.css\" && eslint .",
-    "test": "npm run lint && npm run check"
+    "test": "npm run build && npm run lint && npm run check",
+    "build": "node scripts/build.mjs"
   },
   "devDependencies": {
+    "@appsignal/javascript": "^1.6.1",
+    "@appsignal/plugin-window-events": "^1.0.26",
     "@eslint/js": "^9.39.5",
+    "esbuild": "^0.28.2",
     "eslint": "^9.39.5",
     "globals": "^17.13.0",
     "html-validate": "^10.0.0",
