@@ -12,17 +12,26 @@ menu.addEventListener('click', () => {
   menu.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
   mobileNav.hidden = !open;
 });
-mobileNav.addEventListener('click', event => { if (event.target.closest('a')) closeMenu(); });
-document.addEventListener('keydown', event => {
-  if (event.key === 'Escape' && !mobileNav.hidden) { closeMenu(); menu.focus(); }
+mobileNav.addEventListener('click', (event) => {
+  if (event.target.closest('a')) closeMenu();
 });
-window.matchMedia('(min-width: 761px)').addEventListener('change', event => { if (event.matches) closeMenu(); });
-document.querySelectorAll('[data-service]').forEach(link => {
-  link.addEventListener('click', () => { document.getElementById('service').value = link.dataset.service; });
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && !mobileNav.hidden) {
+    closeMenu();
+    menu.focus();
+  }
+});
+window.matchMedia('(min-width: 761px)').addEventListener('change', (event) => {
+  if (event.matches) closeMenu();
+});
+document.querySelectorAll('[data-service]').forEach((link) => {
+  link.addEventListener('click', () => {
+    document.getElementById('service').value = link.dataset.service;
+  });
 });
 document.getElementById('year').textContent = new Date().getFullYear();
 let emailDraft = '';
-document.getElementById('brief-form').addEventListener('submit', event => {
+document.getElementById('brief-form').addEventListener('submit', (event) => {
   event.preventDefault();
   const form = event.currentTarget;
   if (!form.reportValidity()) return;
@@ -33,7 +42,11 @@ document.getElementById('brief-form').addEventListener('submit', event => {
   const body = 'Hello Norvarden,\n\n' + brief + '\n\n' + name;
   emailDraft = 'To: hello@norvarden.com\nSubject: ' + subject + '\n\n' + body;
   document.getElementById('email-fallback').hidden = false;
-  window.location.href = 'mailto:hello@norvarden.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+  window.location.href =
+    'mailto:hello@norvarden.com?subject=' +
+    encodeURIComponent(subject) +
+    '&body=' +
+    encodeURIComponent(body);
 });
 document.getElementById('copy-brief').addEventListener('click', async () => {
   const status = document.getElementById('copy-status');
