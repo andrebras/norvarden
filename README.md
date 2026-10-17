@@ -1,6 +1,6 @@
 # Waymark identity comparison
 
-Alternative logo 02. The original Norvarden deployment and main branch remain unchanged. Only the logo assets, favicon, hero symbol, and corresponding sharing artwork differ.
+Alternative logo 02. The original Norvarden deployment and main branch remain unchanged. This version uses the Waymark identity with the hatched hero treatment and a Latest projects section presented as typographic rows. The original remains available for comparison.
 
 # Norvarden
 
@@ -38,7 +38,7 @@ Checks local asset references, anchor targets, form labels, JavaScript syntax, m
 - `scripts/serve.mjs` — dependency-free local server.
 - `.openai/hosting.json` — private Sites preview deployment identity.
 
-The product illustrations are original visual treatments, not screenshots of the applications. Plymico is marked free, BetweenStays links to betweenstays.eu, and DriveDeck is marked coming soon.
+Latest projects uses a typographic presentation without thumbnail illustrations. Plymico is marked free, BetweenStays links to betweenstays.eu, and DriveDeck is marked coming soon.
 
 ## Contact setup — required before public launch
 
