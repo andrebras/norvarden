@@ -1,7 +1,3 @@
-# Waymark identity comparison
-
-Alternative logo 02. The original Norvarden deployment and main branch remain unchanged. This version uses the Waymark identity with the hatched hero treatment and a Latest projects section presented as typographic rows. The original remains available for comparison.
-
 # Norvarden
 
 The company website and custom vector identity for **Norvarden**, an independent software engineering company.
@@ -36,7 +32,7 @@ Checks local asset references, anchor targets, form labels, JavaScript syntax, m
 - `dist/assets/social.png` — 1200×630 social sharing image.
 - `dist/assets/social.svg` — editable social artwork concept.
 - `scripts/serve.mjs` — dependency-free local server.
-- `.openai/hosting.json` — private Sites preview deployment identity.
+- `.openai/hosting.json` — Sites production deployment identity.
 
 Latest projects uses a typographic presentation without thumbnail illustrations. Plymico is marked free, BetweenStays links to betweenstays.eu, and DriveDeck is marked coming soon.
 
@@ -69,7 +65,7 @@ The social sharing image uses the future public domain, `https://norvarden.com/a
 - Signal green: `#d7f46a`
 - Supporting forest: `#20281f`
 
-The Waymark is formed by three ascending angular planes, reproducing the selected concept 02. The wordmark uses custom SVG paths. System sans-serif typography and an editorial serif accent keep the site self-contained.
+The Waymark is formed by three ascending angular planes. The hero uses an offset outline and diagonal hatching, while the small logo stays clean. The wordmark uses custom SVG paths. System sans-serif typography and an editorial serif accent keep the site self-contained.
 
 Messaging: **Software with a future.**
 
