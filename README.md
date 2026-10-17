@@ -70,3 +70,7 @@ The Waymark is formed by three ascending angular planes. The hero uses an offset
 Messaging: **Software with a future.**
 
 Services: custom software development, legacy review and recovery, AI-built application maintenance, and ongoing engineering care.
+
+## Professional history
+
+“Independent software engineering since 2011” refers to André’s independent professional activity, which began on 2011-06-24, as supplied by the founder. It does not claim that the Norvarden brand was established in 2011.
