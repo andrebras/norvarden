@@ -3,3 +3,4 @@ package-lock.json
 dist/assets
 README.md
 .claude
+dist/monitoring.js

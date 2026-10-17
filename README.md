@@ -17,12 +17,19 @@ Open **http://localhost:8000**. To change the port, run `PORT=8080 npm run dev`.
 
 ```sh
 npm run format   # format HTML, CSS, JS, and Markdown with Prettier
-npm test         # lint and run the site checks
+npm test         # build, lint and run the site checks
 ```
 
 `npm test` runs the linters and `scripts/check.mjs`. The checks cover local asset references, anchor targets, form labels, mobile menu behaviour, service selection, email encoding, and copying the enquiry draft. They do not replace a real desktop/mobile browser review.
 
 CI (`.github/workflows/ci.yml`) runs `npm test` on every pull request and push to `main`.
+
+## Monitoring
+
+AppSignal (Norvarden organization) watches the site:
+
+- **Uptime:** `https://www.norvarden.com/` is checked every minute from Europe and North America, with email alerts.
+- **Front-end errors:** `src/monitoring.js` reports uncaught JavaScript errors. `npm run build` bundles it into `dist/monitoring.js` (not committed; the Pages workflow builds it). It only reports on `www.norvarden.com`, sends no form contents, and uses AppSignal's public front-end key.
 
 ## Structure
 
@@ -55,7 +62,7 @@ The site is hosted on **GitHub Pages**. `.github/workflows/pages.yml` runs the t
 
 The site uses **hello@norvarden.com**. Mail to it is delivered through Namecheap email forwarding to a personal inbox. This is forwarding only: there is no mailbox, so replies are sent from the receiving address.
 
-The contact form prepares an email in the visitor's own email app. It does **not** send mail, store enquiries, or claim that an enquiry was delivered. A copy-draft option is provided if the email app does not open. No analytics, third-party scripts, or cookies are included.
+The contact form prepares an email in the visitor's own email app. It does **not** send mail, store enquiries, or claim that an enquiry was delivered. A copy-draft option is provided if the email app does not open. No analytics or cookies are included.
 
 ## Identity
 
