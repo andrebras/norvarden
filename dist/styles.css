@@ -1309,8 +1309,11 @@ form .button {
     margin-top: 25px;
   }
 
+  /* The heading's first line spans the full column on phones, so an asterisk
+     hanging off its right edge would widen the page. Flow it after "next?". */
   .contact-asterisk {
-    right: -75px;
+    position: static;
+    margin-left: 0.1em;
     font-size: 70px;
   }
 
@@ -1369,7 +1372,6 @@ form .button {
   }
 
   .contact-asterisk {
-    right: -60px;
     font-size: 53px;
   }
 
