@@ -1,3 +1,7 @@
+# Waymark identity comparison
+
+Alternative logo 02. The original Norvarden deployment and main branch remain unchanged. Only the logo assets, favicon, hero symbol, and corresponding sharing artwork differ.
+
 # Norvarden
 
 The company website and custom vector identity for **Norvarden**, an independent software engineering company.
@@ -65,7 +69,7 @@ The social sharing image uses the future public domain, `https://norvarden.com/a
 - Signal green: `#d7f46a`
 - Supporting forest: `#20281f`
 
-The N is a geometric waymarker: two upright forms joined by a decisive diagonal. The wordmark uses custom SVG paths. System sans-serif typography and an editorial serif accent keep the site self-contained.
+The Waymark is formed by three ascending angular planes, reproducing the selected concept 02. The wordmark uses custom SVG paths. System sans-serif typography and an editorial serif accent keep the site self-contained.
 
 Messaging: **Software with a future.**
 
