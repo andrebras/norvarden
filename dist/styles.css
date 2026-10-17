@@ -31,6 +31,22 @@ a {
   text-decoration: none;
 }
 
+/* Inline SVG icons replace arrow/check characters, which phones render as emoji. */
+.icon {
+  display: inline-block;
+  width: 0.85em;
+  height: 0.85em;
+  vertical-align: -0.05em;
+  fill: none;
+  stroke: currentcolor;
+  stroke-width: 1.5;
+  overflow: visible;
+}
+
+.icon-check {
+  stroke-width: 2.5;
+}
+
 button,
 input,
 textarea,
@@ -422,9 +438,15 @@ h2 {
 }
 
 .service li::before {
-  content: '↳';
-  color: #7b855f;
+  content: '';
+  display: inline-block;
+  width: 0.9em;
+  height: 0.9em;
   margin-right: 9px;
+  vertical-align: -0.05em;
+  background: #7b855f;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.5'%3E%3Cpath d='M6 3v12h14M16 11l4 4-4 4'/%3E%3C/svg%3E")
+    center / contain no-repeat;
 }
 
 .service > a {
