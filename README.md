@@ -1,62 +1,61 @@
 # Norvarden
 
-The company website and custom vector identity for **Norvarden**, an independent software engineering company.
+The company website and custom vector identity for **Norvarden**, an independent software engineering company. Live at **https://norvarden.com**.
 
-## Run locally
+## Development
 
-Install **Node.js 20 or newer**. No package installation, database, environment variables, or build step is required.
+Install **Node.js 20 or newer**. There is no database, no environment variables, and no build step.
 
 ```sh
 git clone git@github.com:andrebras/norvarden.git
 cd norvarden
+npm ci
 npm run dev
 ```
 
 Open **http://localhost:8000**. To change the port, run `PORT=8080 npm run dev`.
 
 ```sh
-npm run check
+npm run format   # format HTML, CSS, JS, and Markdown with Prettier
+npm test         # lint and run the site checks
 ```
 
-Checks local asset references, anchor targets, form labels, JavaScript syntax, mobile menu behaviour, service selection, email encoding, and copying the enquiry draft. These checks do not replace a real desktop/mobile browser review.
+`npm test` runs the linters and `scripts/check.mjs`. The checks cover local asset references, anchor targets, form labels, mobile menu behaviour, service selection, email encoding, and copying the enquiry draft. They do not replace a real desktop/mobile browser review.
+
+CI (`.github/workflows/ci.yml`) runs `npm test` on every pull request and push to `main`.
 
 ## Structure
 
 - `dist/index.html` — complete homepage, content, and metadata.
 - `dist/styles.css` — responsive visual system, including reduced-motion support.
 - `dist/app.js` — accessible mobile navigation and email brief preparation.
+- `dist/404.html` — not-found page.
+- `dist/robots.txt`, `dist/sitemap.xml` — crawler instructions and sitemap.
+- `dist/CNAME` — custom domain for GitHub Pages.
 - `dist/assets/logo.svg` — custom path-based Norvarden wordmark and N symbol; no font dependency.
 - `dist/assets/symbol.svg` — transparent standalone N symbol.
 - `dist/assets/logo-light.svg` — reversed wordmark for dark backgrounds.
 - `dist/assets/mark.svg` — square favicon.
+- `dist/assets/apple-touch-icon.png` — home-screen icon.
 - `dist/assets/social.png` — 1200×630 social sharing image.
 - `dist/assets/social.svg` — editable social artwork concept.
 - `scripts/serve.mjs` — dependency-free local server.
-- `.openai/hosting.json` — Sites production deployment identity.
+- `scripts/check.mjs` — site checks.
 
 Latest projects uses a typographic presentation without thumbnail illustrations. Plymico is marked free, BetweenStays links to betweenstays.eu, and DriveDeck is marked coming soon.
 
-## Contact setup — required before public launch
-
-The site uses **hello@norvarden.com** as its company contact address. This is a proposed address, not a provisioned or verified mailbox. Set it up with your email provider, or replace every occurrence in `dist/index.html` and `dist/app.js` with your chosen working address before launching publicly.
-
-The contact form prepares an email in the visitor's own email app. It does **not** send mail, store enquiries, or claim that an enquiry was delivered. A copy-draft option is provided if the email app does not open. No analytics, third-party scripts, or cookies are included.
-
 ## Hosting
 
-The complete deployable website is **`dist/`**. It can be hosted by any static host. There is no build command.
+The site is hosted on **GitHub Pages**. `.github/workflows/pages.yml` runs the tests and publishes `dist/` on every push to `main`. There is no build command.
 
-For a Git-connected host:
+- **Domain:** `norvarden.com` is the canonical address; `www.norvarden.com` redirects to it.
+- **DNS (Namecheap):** four `A` records for `@` pointing to GitHub Pages (`185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`) and a `CNAME` record for `www` pointing to `andrebras.github.io`.
 
-1. Connect `andrebras/norvarden` and select `main`.
-2. Choose a static/no-framework project.
-3. Leave the build command empty; set the publish/output directory to `dist`.
-4. Verify the provider preview.
-5. Add `norvarden.com` and follow that provider's DNS instructions. Choose either the apex or `www` as canonical and redirect the other.
+## Contact
 
-Do not change domain DNS until a hosting target has been selected. The private Sites preview does not connect the purchased domain automatically.
+The site uses **hello@norvarden.com**. Mail to it is delivered through Namecheap email forwarding to a personal inbox. This is forwarding only: there is no mailbox, so replies are sent from the receiving address.
 
-The social sharing image uses the future public domain, `https://norvarden.com/assets/social.png`. It will resolve once the domain is connected to the public hosting.
+The contact form prepares an email in the visitor's own email app. It does **not** send mail, store enquiries, or claim that an enquiry was delivered. A copy-draft option is provided if the email app does not open. No analytics, third-party scripts, or cookies are included.
 
 ## Identity
 
