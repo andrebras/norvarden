@@ -4,7 +4,7 @@ The company website and custom vector identity for **Norvarden**, an independent
 
 ## Development
 
-Install **Node.js 20 or newer** (CI uses Node 22). There is no database and no environment variables. The only build step is `npm run build`, which `npm run dev`, `npm start` and `npm test` run for you.
+Install **Node.js 22.16 or newer** (or 24+; CI uses Node 22). There is no database and no environment variables. The only build step is `npm run build`, which `npm run dev`, `npm start` and `npm test` run for you.
 
 ```sh
 git clone git@github.com:andrebras/norvarden.git
