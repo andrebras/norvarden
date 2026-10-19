@@ -2,6 +2,13 @@
 
 The company website and custom vector identity for **Norvarden**, an independent software engineering company. Live at **https://www.norvarden.com**.
 
+## Products
+
+- **[Avenstad](https://www.avenstad.com)**: a private place for a household’s homes, collections and possessions, and the people who care for them. By invitation.
+- **[BetweenStays](https://betweenstays.eu)**: a clearer way for short-term rental hosts to manage the gaps between stays.
+- **[Plymico](https://plymico.com)**: a simpler place to enjoy chess. Play at your own pace, without ads or distractions. Live and free.
+- **DriveDeck**: stint planning, pit decisions and race-day coordination for endurance karting. One place for the whole team. Coming soon.
+
 ## Development
 
 Install **Node.js 22.16 or newer** (or 24+; CI uses Node 22). There is no database and no environment variables. The only build step is `npm run build`, which `npm run dev`, `npm start` and `npm test` run for you.
@@ -56,7 +63,7 @@ AppSignal (Norvarden organization) watches the site:
 - `scripts/check.mjs` — site checks.
 - `.github/workflows/ci.yml`, `.github/workflows/pages.yml` — CI and deployment.
 
-Latest projects uses a typographic presentation without thumbnail illustrations. ONZE HQ links to onzehq.com and is marked by invitation, Plymico is marked free, BetweenStays links to betweenstays.eu, and DriveDeck is marked coming soon.
+Latest projects uses a typographic presentation without thumbnail illustrations. Avenstad links to avenstad.com and is marked by invitation, BetweenStays links to betweenstays.eu, Plymico is marked free, and DriveDeck is marked coming soon.
 
 ## Hosting
 
