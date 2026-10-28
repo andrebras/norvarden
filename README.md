@@ -56,7 +56,7 @@ AppSignal (Norvarden organization) watches the site:
 - `scripts/check.mjs` — site checks.
 - `.github/workflows/ci.yml`, `.github/workflows/pages.yml` — CI and deployment.
 
-Latest projects uses a typographic presentation without thumbnail illustrations. Plymico is marked free, BetweenStays links to betweenstays.eu, and DriveDeck is marked coming soon.
+Latest projects uses a typographic presentation without thumbnail illustrations. ONZE HQ links to onzehq.com and is marked by invitation, Plymico is marked free, BetweenStays links to betweenstays.eu, and DriveDeck is marked coming soon.
 
 ## Hosting
 
