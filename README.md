@@ -4,6 +4,7 @@ The company website and custom vector identity for **Norvarden**, an independent
 
 ## Products
 
+- **[ONZE HQ](https://onzehq.com)**: a home for youth football clubs, from the office to the pitch. Players, families, registrations, fees, kit and match sheets in one place. By invitation.
 - **[Avenstad](https://www.avenstad.com)**: a private place for a household’s homes, collections and possessions, and the people who care for them. By invitation.
 - **[BetweenStays](https://betweenstays.eu)**: a clearer way for short-term rental hosts to manage the gaps between stays.
 - **[Plymico](https://plymico.com)**: a simpler place to enjoy chess. Play at your own pace, without ads or distractions. Live and free.
@@ -63,7 +64,7 @@ AppSignal (Norvarden organization) watches the site:
 - `scripts/check.mjs` — site checks.
 - `.github/workflows/ci.yml`, `.github/workflows/pages.yml` — CI and deployment.
 
-Latest projects uses a typographic presentation without thumbnail illustrations. Avenstad links to avenstad.com and is marked by invitation, BetweenStays links to betweenstays.eu, Plymico is marked free, and DriveDeck is marked coming soon.
+Latest projects uses a typographic presentation without thumbnail illustrations. ONZE HQ links to onzehq.com and is marked by invitation, Avenstad links to avenstad.com and is marked by invitation, BetweenStays links to betweenstays.eu, Plymico is marked free, and DriveDeck is marked coming soon.
 
 ## Hosting
 
